@@ -58,15 +58,18 @@ void crout_1(double const **A, double **L, double **U, int n) {
 void crout_2(double const **A, double **L, double **U, int n) {
     int i, j, k;
     double sum = 0;
-    switch(num_threads)
-    {
+    //sequential
+    // for (i = 0; i < n; i++) {
+    //     U[i][i] = 1;
+    // }
+    switch(num_threads){
       case 1:
       {
       	#pragma omp parallel sections
        	{
       		#pragma omp section
       		{
-      			for (i=0*(n)/1; i<1*(n)/1; i++)
+      			for (int i=0*(n)/1; i<1*(n)/1; i++)
       			 {
        				 U[i][i] = 1;
        			 }
@@ -80,14 +83,14 @@ void crout_2(double const **A, double **L, double **U, int n) {
        	{
       		#pragma omp section
       		{
-      			for (i=0*(n)/2; i<1*(n)/2; i++)
+      			for (int i=0*(n)/2; i<1*(n)/2; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=1*(n)/2; i<2*(n)/2; i++)
+      			for (int i=1*(n)/2; i<2*(n)/2; i++)
       			 {
        				 U[i][i] = 1;
        			 }
@@ -101,28 +104,28 @@ void crout_2(double const **A, double **L, double **U, int n) {
        	{
       		#pragma omp section
       		{
-      			for (i=0*(n)/4; i<1*(n)/4; i++)
+      			for (int i=0*(n)/4; i<1*(n)/4; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=1*(n)/4; i<2*(n)/4; i++)
+      			for (int i=1*(n)/4; i<2*(n)/4; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=2*(n)/4; i<3*(n)/4; i++)
+      			for (int i=2*(n)/4; i<3*(n)/4; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=3*(n)/4; i<4*(n)/4; i++)
+      			for (int i=3*(n)/4; i<4*(n)/4; i++)
       			 {
        				 U[i][i] = 1;
        			 }
@@ -136,56 +139,56 @@ void crout_2(double const **A, double **L, double **U, int n) {
        	{
       		#pragma omp section
       		{
-      			for (i=0*(n)/8; i<1*(n)/8; i++)
+      			for (int i=0*(n)/8; i<1*(n)/8; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=1*(n)/8; i<2*(n)/8; i++)
+      			for (int i=1*(n)/8; i<2*(n)/8; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=2*(n)/8; i<3*(n)/8; i++)
+      			for (int i=2*(n)/8; i<3*(n)/8; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=3*(n)/8; i<4*(n)/8; i++)
+      			for (int i=3*(n)/8; i<4*(n)/8; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=4*(n)/8; i<5*(n)/8; i++)
+      			for (int i=4*(n)/8; i<5*(n)/8; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=5*(n)/8; i<6*(n)/8; i++)
+      			for (int i=5*(n)/8; i<6*(n)/8; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=6*(n)/8; i<7*(n)/8; i++)
+      			for (int i=6*(n)/8; i<7*(n)/8; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=7*(n)/8; i<8*(n)/8; i++)
+      			for (int i=7*(n)/8; i<8*(n)/8; i++)
       			 {
        				 U[i][i] = 1;
        			 }
@@ -199,112 +202,112 @@ void crout_2(double const **A, double **L, double **U, int n) {
        	{
       		#pragma omp section
       		{
-      			for (i=0*(n)/16; i<1*(n)/16; i++)
+      			for (int i=0*(n)/16; i<1*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=1*(n)/16; i<2*(n)/16; i++)
+      			for (int i=1*(n)/16; i<2*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=2*(n)/16; i<3*(n)/16; i++)
+      			for (int i=2*(n)/16; i<3*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=3*(n)/16; i<4*(n)/16; i++)
+      			for (int i=3*(n)/16; i<4*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=4*(n)/16; i<5*(n)/16; i++)
+      			for (int i=4*(n)/16; i<5*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=5*(n)/16; i<6*(n)/16; i++)
+      			for (int i=5*(n)/16; i<6*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=6*(n)/16; i<7*(n)/16; i++)
+      			for (int i=6*(n)/16; i<7*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=7*(n)/16; i<8*(n)/16; i++)
+      			for (int i=7*(n)/16; i<8*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=8*(n)/16; i<9*(n)/16; i++)
+      			for (int i=8*(n)/16; i<9*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=9*(n)/16; i<10*(n)/16; i++)
+      			for (int i=9*(n)/16; i<10*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=10*(n)/16; i<11*(n)/16; i++)
+      			for (int i=10*(n)/16; i<11*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=11*(n)/16; i<12*(n)/16; i++)
+      			for (int i=11*(n)/16; i<12*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=12*(n)/16; i<13*(n)/16; i++)
+      			for (int i=12*(n)/16; i<13*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=13*(n)/16; i<14*(n)/16; i++)
+      			for (int i=13*(n)/16; i<14*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=14*(n)/16; i<15*(n)/16; i++)
+      			for (int i=14*(n)/16; i<15*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
       		}
       		#pragma omp section
       		{
-      			for (i=15*(n)/16; i<16*(n)/16; i++)
+      			for (int i=15*(n)/16; i<16*(n)/16; i++)
       			 {
        				 U[i][i] = 1;
        			 }
@@ -313,6 +316,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
       	break;
       }
       }
+
 
     for (j = 0; j < n; j++) {
         //sequential
@@ -331,7 +335,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
            	{
           		#pragma omp section
           		{
-          			for (i=j+0*(n-j)/1; i<j+1*(n-j)/1; i++)
+          			for (int i=j+0*(n-j)/1; i<j+1*(n-j)/1; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -349,7 +353,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
            	{
           		#pragma omp section
           		{
-          			for (i=j+0*(n-j)/2; i<j+1*(n-j)/2; i++)
+          			for (int i=j+0*(n-j)/2; i<j+1*(n-j)/2; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -360,7 +364,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+1*(n-j)/2; i<j+2*(n-j)/2; i++)
+          			for (int i=j+1*(n-j)/2; i<j+2*(n-j)/2; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -378,7 +382,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
            	{
           		#pragma omp section
           		{
-          			for (i=j+0*(n-j)/4; i<j+1*(n-j)/4; i++)
+          			for (int i=j+0*(n-j)/4; i<j+1*(n-j)/4; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -389,7 +393,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+1*(n-j)/4; i<j+2*(n-j)/4; i++)
+          			for (int i=j+1*(n-j)/4; i<j+2*(n-j)/4; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -400,7 +404,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+2*(n-j)/4; i<j+3*(n-j)/4; i++)
+          			for (int i=j+2*(n-j)/4; i<j+3*(n-j)/4; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -411,7 +415,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+3*(n-j)/4; i<j+4*(n-j)/4; i++)
+          			for (int i=j+3*(n-j)/4; i<j+4*(n-j)/4; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -429,7 +433,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
            	{
           		#pragma omp section
           		{
-          			for (i=j+0*(n-j)/8; i<j+1*(n-j)/8; i++)
+          			for (int i=j+0*(n-j)/8; i<j+1*(n-j)/8; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -440,7 +444,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+1*(n-j)/8; i<j+2*(n-j)/8; i++)
+          			for (int i=j+1*(n-j)/8; i<j+2*(n-j)/8; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -451,7 +455,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+2*(n-j)/8; i<j+3*(n-j)/8; i++)
+          			for (int i=j+2*(n-j)/8; i<j+3*(n-j)/8; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -462,7 +466,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+3*(n-j)/8; i<j+4*(n-j)/8; i++)
+          			for (int i=j+3*(n-j)/8; i<j+4*(n-j)/8; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -473,7 +477,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+4*(n-j)/8; i<j+5*(n-j)/8; i++)
+          			for (int i=j+4*(n-j)/8; i<j+5*(n-j)/8; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -484,7 +488,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+5*(n-j)/8; i<j+6*(n-j)/8; i++)
+          			for (int i=j+5*(n-j)/8; i<j+6*(n-j)/8; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -495,7 +499,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+6*(n-j)/8; i<j+7*(n-j)/8; i++)
+          			for (int i=j+6*(n-j)/8; i<j+7*(n-j)/8; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -506,7 +510,7 @@ void crout_2(double const **A, double **L, double **U, int n) {
           		}
           		#pragma omp section
           		{
-          			for (i=j+7*(n-j)/8; i<j+8*(n-j)/8; i++)
+          			for (int i=j+7*(n-j)/8; i<j+8*(n-j)/8; i++)
           			{
               				sum = 0;
               				for (k = 0; k < j; k++) {
@@ -519,188 +523,188 @@ void crout_2(double const **A, double **L, double **U, int n) {
           	break;
           }
           case 16:
-        {
-        	#pragma omp parallel sections
-         	{
-        		#pragma omp section
-        		{
-        			for (i=j+0*(n-j)/16; i<j+1*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+1*(n-j)/16; i<j+2*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+2*(n-j)/16; i<j+3*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+3*(n-j)/16; i<j+4*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+4*(n-j)/16; i<j+5*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+5*(n-j)/16; i<j+6*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+6*(n-j)/16; i<j+7*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+7*(n-j)/16; i<j+8*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+8*(n-j)/16; i<j+9*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+9*(n-j)/16; i<j+10*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+10*(n-j)/16; i<j+11*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+11*(n-j)/16; i<j+12*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+12*(n-j)/16; i<j+13*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+13*(n-j)/16; i<j+14*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+14*(n-j)/16; i<j+15*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        		#pragma omp section
-        		{
-        			for (i=j+15*(n-j)/16; i<j+16*(n-j)/16; i++)
-        			{
-            				sum = 0;
-            				for (k = 0; k < j; k++) {
-          				   sum = sum + L[i][k] * U[k][j];
-         				   }
-         				   L[i][j] = A[i][j] - sum;
-        			}
-        		}
-        	}
-        	break;
-        }
+          {
+          	#pragma omp parallel sections
+           	{
+          		#pragma omp section
+          		{
+          			for (int i=j+0*(n-j)/16; i<j+1*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+1*(n-j)/16; i<j+2*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+2*(n-j)/16; i<j+3*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+3*(n-j)/16; i<j+4*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+4*(n-j)/16; i<j+5*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+5*(n-j)/16; i<j+6*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+6*(n-j)/16; i<j+7*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+7*(n-j)/16; i<j+8*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+8*(n-j)/16; i<j+9*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+9*(n-j)/16; i<j+10*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+10*(n-j)/16; i<j+11*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+11*(n-j)/16; i<j+12*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+12*(n-j)/16; i<j+13*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+13*(n-j)/16; i<j+14*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+14*(n-j)/16; i<j+15*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          		#pragma omp section
+          		{
+          			for (int i=j+15*(n-j)/16; i<j+16*(n-j)/16; i++)
+          			{
+              				sum = 0;
+              				for (k = 0; k < j; k++) {
+            				   sum = sum + L[i][k] * U[k][j];
+           				   }
+           				   L[i][j] = A[i][j] - sum;
+          			}
+          		}
+          	}
+          	break;
+          }
         }
 
 
