@@ -1,3 +1,4 @@
+#include <cstdlib>
 int num_threads=1;
 void crout_0(double const **A, double **L, double **U, int n) {
     int i, j, k;
@@ -1295,6 +1296,21 @@ void crout_3(double const **A, double **L, double **U, int n) {
     }
 }
 int main(int argc, char const *argv[]) {
-  /* code */
+  int n=atoi(argv[1]);
+  string filename=argv[2];
+  num_threads=atoi(argv[3]);
+  int strategy=atoi(argv[4]);
+  double **A=(double **)malloc(sizeof(double*)*n);
+  for (size_t i = 0; i < n; i++) {
+    A[i]=(double*)malloc(sizeof(double)*n);
+  }
+  double **L=(double **)malloc(sizeof(double*)*n);
+  for (size_t i = 0; i < n; i++) {
+    L[i]=(double*)malloc(sizeof(double)*n);
+  }
+  double **U=(double **)malloc(sizeof(double*)*n);
+  for (size_t i = 0; i < n; i++) {
+    U[i]=(double*)malloc(sizeof(double)*n);
+  }
   return 0;
 }
