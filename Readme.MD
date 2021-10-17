@@ -17,9 +17,9 @@ bash run.sh <Dimension of input square matrix> <Input File> <Number of Threads> 
 - I have implemented multiple strategies to make the code parallel. The number specifies which one to run. I have talked about the different stategies in the subsequent section.
 - The code output 2 files, one containing te L matrix and the other U matrix.
 
-##Strategies Employed
+## Strategies Employed
 
-### Strategy 0:
+### Strategy 0
 - This corresponds to the below sequential code 
  ```
  void crout_0(double **A, double **L, double **U, int n) {
@@ -49,21 +49,21 @@ bash run.sh <Dimension of input square matrix> <Input File> <Number of Threads> 
     }
 }
  ```
-### Strategy 1:
+### Strategy 1
 - I used the <code>parallel for</code> construct of <code> OpenMP</code> to parallelize the 2 internal loops inside the big j loop.
 - I removed any possibilty of data race by making variable sum,i,k private.
 
-### Strategy 2:
+### Strategy 2
 - I used the ```parallel sections``` construct of ```OpenMP```.
 - In this I distribute the 2 internal loops to 2 sections and also break each loop into 2 chunks. Thus I created 4 sections in total.
 - I did not increase the number of sections and preferred to hard code it since it was leading to great increase in the code base and also to the errors that I was facing. Thus I did a tradeoff and settled for 4 sections. For number of threads different that 4, openmp internally handles them.
 - When trying to run the 2 loops in parallel, a new data race is created since the first loop tries to update L[j][j] when the other loops reads it. To remove this I started the loop from i=j+1 rather than j and computed the i=j iteration before the sections pragma.
 
-### Strategy 3:
+### Strategy 3
 - I used a combination of both ```parallel for``` and ```parallel sections``` construct of ```OpenMP```.
 - In this I divide the 2 internal loops to two sections and then use the ```parallel for pragma```. I used ideas used in 1,2 to remove data races from our code.
   
-### Strategy 4:
+### Strategy 4
 - I wrote an ```MPI``` version in this that solves the problem in a distributed manner. I did so by exploring 2 strategies to do the same.
 - Strategy-1
     - In this I divide the iterations of the loop in a round robin fashion. for the ith iteration, give it to the process that has its rank such that i%(num of processes)=rank i.e. iteration 1 goes to process 1, 2 to process 2....
