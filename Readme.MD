@@ -2,7 +2,7 @@
 
 In this project, I have made a parallelized and distributed version of a sequential Crout Diagonalization of a matrix using various different strategies.
 
-Crout decomposition factors a matrix as the product of a lower and upper triangular matrices. More about LU decomposition can be found in this [Wikipedia Article]
+Crout decomposition factors a matrix as the product of a lower and upper triangular matrix. More about LU decomposition can be found in this [Wikipedia Article]
 
 ## Installation and Usage Instructions
  
