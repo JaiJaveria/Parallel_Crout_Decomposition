@@ -6,7 +6,6 @@ STRATEGY=$4
 if [ $STRATEGY == 4 ]
 then
 	mpiexec -n $NUM_THREADS ./crout4 $N $INP_FILE $NUM_THREADS $STRATEGY
-	# echo "NOT IMPLEMENTED"
 else
 	./crout $N $INP_FILE $NUM_THREADS $STRATEGY
 fi

@@ -1,9 +1,0 @@
-strategy 1:
-  we used the pragma omp parallel for to parallelize the 2 internal loops inside the big j loop.
-  we removed any possibilty of data race by making variable sum,i,k private.
-strategy 2:
-  in this we distribute the 2 internal loops to 2 sections and also break each loop into 2 chunks. Thus we created 4 sections in total.
-  we did not increase the number of sections and preferred to hard code it since it was leading to great increase in the code base and also to the errors that we were facing. Thus we did a tradeoff and settled for 4 sections. For number of threads different that 4, openmp internally handles them.
-  when trying to run the 2 loops in parallel, a new data race is created since the first loop tries to update L[j][j] when the other loops reads it. To remove this we started the loop from i=j+1 rather than j and computed the i=j iteration before the sections pragma.
-strategy 3:
-  in this we divide the 2 internal loops to two sections and then use the parallel for pragma. we used strategies used in 1,2 to remove data races from our code.

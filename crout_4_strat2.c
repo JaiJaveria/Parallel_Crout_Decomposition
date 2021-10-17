@@ -4,6 +4,7 @@
 #include <mpi.h>
 void write_output(char fname[], double** arr, int n )
 {
+  // printf("7\n" );
     FILE *f = fopen(fname, "w");
 
     for( int i = 0; i < n; i++){
@@ -27,24 +28,30 @@ int main(int argc, char const *argv[]) {
   size_t n=atoi(argv[1]);
 
   double (*A)[n]=malloc(sizeof *A *n);
-  // double (*L)[n]=malloc(sizeof *L *n);
-  // double (*U)[n]=malloc(sizeof *U *n);
+  double (*L)[n]=malloc(sizeof *L *n);
+  double (*UT)[n]=malloc(sizeof *UT *n);//u transpose
   // printf("30 rank %d\n",world_rank );
   // double **A=(double **)malloc(sizeof(double*)*n);
   // for (size_t i = 0; i < n; i++) {
   //   A[i]=(double*)malloc(sizeof(double)*n);
   // }
-  double **L=(double **)malloc(sizeof(double*)*n);
-  for (size_t i = 0; i < n; i++) {
-    L[i]=(double*)malloc(sizeof(double)*n);
-  }
-  double **U=(double **)malloc(sizeof(double*)*n);
-  for (size_t i = 0; i < n; i++) {
-    U[i]=(double*)malloc(sizeof(double)*n);
-  }
-  // printf("42 rank %d\n",world_rank );
+  double **L_print;
+  double **U_print;
   if (world_rank==0)
   {
+    /* code */
+    L_print=(double **)malloc(sizeof(double*)*n);
+    for (size_t i = 0; i < n; i++) {
+      L_print[i]=(double*)malloc(sizeof(double)*n);
+    }
+    U_print=(double **)malloc(sizeof(double*)*n);
+    for (size_t i = 0; i < n; i++) {
+      U_print[i]=(double*)malloc(sizeof(double)*n);
+    }
+  // }
+  // // printf("42 rank %d\n",world_rank );
+  // if (world_rank==0)
+  // {
     const char* filename=argv[2];
     FILE* fileA=fopen(filename,"r");
     if (fileA==NULL) {
@@ -65,16 +72,19 @@ int main(int argc, char const *argv[]) {
   for (size_t i = 0; i < n; i++) {
     for (size_t j = 0; j < n; j++) {
       L[i][j]=0;
-      U[i][j]=0;
+      UT[i][j]=0;
     }
   }
 
     int i, j, k;
     double sum = 0;
     for (i = 0; i < n; i++) {
-        U[i][i] = 1;
+        UT[i][i] = 1;
     }
-
+    int num_rows=n/world_size;
+    double (*calc_mat_L)[n]=malloc(sizeof *calc_mat_L *num_rows);
+    double (*calc_mat_U)[n]=malloc(sizeof *calc_mat_U *num_rows);
+    int realIndex;
     for (j = 0; j < n; j++)
     {
       if (world_rank==0)
@@ -82,29 +92,36 @@ int main(int argc, char const *argv[]) {
         // i=j iteration
         sum = 0;
         for (k = 0; k < j; k++) {
-            sum = sum + L[j][k] * U[k][j];
+          // sum = sum + L[j][k] * U[k][j];
+            sum = sum + L[j][k] * UT[j][k];
         }
         L[j][j] = A[j][j] - sum;
       }
-      MPI_Bcast(&(L[j][j]),1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      // MPI_Bcast(&(L[j][j]),n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       // MPI_Barrier(MPI_COMM_WORLD);
       // printf("90 rank %d\n",world_rank );
-      // MPI_Bcast(L,n*n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-      // MPI_Bcast(U,n*n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-      // MPI_Scatter(L,n*n/world_size,MPI_DOUBLE,calc_mat_L,n*n/world_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-      // MPI_Scatter(U,n*n/world_size,MPI_DOUBLE,calc_mat_U,n*n/world_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-      for (i = j+1; i < n; i++)
+      MPI_Bcast(L[j],n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      MPI_Bcast(UT[j],n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      MPI_Scatter(L,n*num_rows,MPI_DOUBLE,calc_mat_L,n*num_rows, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      MPI_Scatter(UT,n*num_rows,MPI_DOUBLE,calc_mat_U,n*num_rows, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      // printf("106 rank %d\n",world_rank );
+      for (i =0; i < num_rows; i++)
+      // for (i = j+1; i < n; i++)
       {
-        if (i%world_size==world_rank) {
+        realIndex=i+num_rows*world_rank;
+        if (realIndex>j && realIndex<n )
+        {
           /* code */
           sum = 0;
           for (k = 0; k < j; k++) {
-              sum = sum + L[i][k] * U[k][j];
+            // sum = sum + L[i][k] * U[k][j];
+            // sum = sum + L[i][k] * UT[j][k];
+              sum = sum + calc_mat_L[i][k] * UT[j][k];
           }
-          L[i][j] = A[i][j] - sum;
+          calc_mat_L[i][j] = A[realIndex][j] - sum;
           // MPI_Bcast(&L[i][j],1, MPI_DOUBLE, world_rank, MPI_COMM_WORLD);
         }
-          MPI_Bcast(&L[i][j],1, MPI_DOUBLE, i%world_size, MPI_COMM_WORLD);
+          // MPI_Bcast(&L[i][j],1, MPI_DOUBLE, i%world_size, MPI_COMM_WORLD);
         // else
         // {
         //   MPI_Bcast(&L[i][j],1, MPI_DOUBLE, i%world_size, MPI_COMM_WORLD);
@@ -112,34 +129,41 @@ int main(int argc, char const *argv[]) {
         // }
           // printf(" L %d %d %lf\n",i,j,L[i][j] );
       }
-      for (i = j; i < n; i++)
+      for (i = 0; i < num_rows; i++)
+      // for (i = j; i < n; i++)
       {
-        if (i%world_size==world_rank) {
+        realIndex=i+num_rows*world_rank;
+        if (realIndex>=j && realIndex<n )
+        {
           sum = 0;
           for(k = 0; k < j; k++) {
-              sum = sum + L[j][k] * U[k][i];
+            // sum = sum + L[j][k] * U[k][i];
+              sum = sum + L[j][k] * calc_mat_U[i][k];
           }
           if (L[j][j] == 0) {
               exit(0);
               // return;
           }
-          U[j][i] = (A[j][i] - sum) / L[j][j];
+          calc_mat_U[i][j] = (A[j][realIndex] - sum) / L[j][j];
+          // UT[i][j] = (A[j][i] - sum) / L[j][j];
+          // U[j][i] = (A[j][i] - sum) / L[j][j];
           // MPI_Bcast(&U[i][j],1, MPI_DOUBLE, world_rank, MPI_COMM_WORLD);
 
           // printf(" U %d %d %lf\n",i,j,U[i][j] );
         }
-        MPI_Bcast(&U[j][i],1, MPI_DOUBLE, i%world_size, MPI_COMM_WORLD);
+        // MPI_Bcast(&U[j][i],1, MPI_DOUBLE, i%world_size, MPI_COMM_WORLD);
         // else
         // {
         //   MPI_Bcast(&U[i][j],1, MPI_DOUBLE, i%world_size, MPI_COMM_WORLD);
         //
         // }
       }
-      // MPI_Gather(calc_mat_L,n*n/world_size,MPI_DOUBLE,L,n*n/world_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-      // MPI_Gather(calc_mat_U,n*n/world_size,MPI_DOUBLE,U,n*n/world_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      // printf("160 rank %d\n",world_rank );
+      MPI_Gather(calc_mat_L,n*num_rows,MPI_DOUBLE,L,n*num_rows, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+      MPI_Gather(calc_mat_U,n*num_rows,MPI_DOUBLE,UT,n*num_rows, MPI_DOUBLE, 0, MPI_COMM_WORLD);
       // MPI_Barrier(MPI_COMM_WORLD);
       // fflush(stdout);
-      // printf("128 rank %d\n",world_rank );
+      // printf("165 rank %d\n",world_rank );
 
       }
       // printf("131 rank %d\n",world_rank );
@@ -178,9 +202,15 @@ int main(int argc, char const *argv[]) {
         strcat(outU,".txt");
         // printf("L:\n" );
         // printf("174\n" );
-        write_output(outL, L, n );
+        for (size_t i = 0; i < n; i++) {
+          for (size_t j = 0; j < n; j++) {
+            L_print[i][j]=L[i][j];
+            U_print[i][j]=UT[j][i];
+          }
+        }
+        write_output(outL, L_print, n );
         // printf("U:\n" );
-        write_output(outU, U, n );
+        write_output(outU, U_print, n );
         // printf("180\n" );
         // for (size_t i = 0; i < n; i++) {
         //   for (size_t j = 0; j < n; j++) {
@@ -202,14 +232,28 @@ int main(int argc, char const *argv[]) {
         free(outU);
       }
 
-  for (size_t i = 0; i < n; i++) {
-    // free(A[i]);
-    free(L[i]);
-    free(U[i]);
-  }
+
+  // printf("240\n" );
   free(A);
   free(L);
-  free(U);
+  // printf("243\n" );
+
+  if (world_rank==0)
+  {
+    for (size_t i = 0; i < n; i++) {
+      // free(A[i]);
+      free(L_print[i]);
+      free(U_print[i]);
+    }
+    free(L_print);
+    free(U_print);
+    /* code */
+  }
+  // printf("246\n" );
+
+  free(UT);
+  // printf("250\n" );
+
   // return 0;
   MPI_Finalize();
 
